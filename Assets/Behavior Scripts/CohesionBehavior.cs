@@ -22,6 +22,5 @@ public class CohesionBehavior : FlockBehavior {
         //Create offset from agent position
         cohesionMove -= (Vector2)agent.transform.position;
         return cohesionMove;
-
     }
 }
