@@ -2,17 +2,21 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class NewBehaviourScript : MonoBehaviour
-{
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+[CreateAssetMenu(menuName = "Flock/Behavior/Alignment")]
+public class AlignmentBehavior : FlockBehavior {
+    //if there are no neighbors, maintain current alignment
+    public override Vector2 CalculateMove(FlockAgent agent, List<Transform> context, Flock flock) {
+        if(context.Count == 0) {
+            return agent.transform.up;
+        }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+        //add points together and average
+        Vector2 alignmentMove = Vector2.zero;
+        foreach(Transform item in context) {
+            alignmentMove += (Vector2)item.transform.up;
+        }
+
+        alignmentMove /= context.Count;
+        return alignmentMove;
     }
 }
