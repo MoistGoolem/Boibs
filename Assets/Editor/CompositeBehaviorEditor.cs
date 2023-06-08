@@ -19,13 +19,30 @@ public class CompositeEditor : Editor {
             r = EditorGUILayout.BeginHorizontal();
             r.height = EditorGUIUtility.singleLineHeight;
         } else {
+            //Setup space for behaviors
             r.x = 30f;
             r.width = EditorGUIUtility.currentViewWidth - 95f;
             EditorGUI.LabelField(r, "Behaviors");
+
             r.x = EditorGUIUtility.currentViewWidth - 65f;
+            //Setup space for weights
             r.width = 60f;
             EditorGUI.LabelField(r, "Weights");
             r.y += EditorGUIUtility.singleLineHeight * 1.2f;
+
+            //Populate behaviors and weights
+            for (int i = 0; i < cb.behaviors.Length; i++) {
+                r.x = 5f;
+                r.width = 20f;
+                EditorGUI.LabelField(r, i.ToString());
+                r.x = 30f;
+                r.width = EditorGUIUtility.currentViewWidth - 95f;
+                cb.behaviors[i] = (FlockBehavior)EditorGUI.ObjectField(r, cb.behaviors[i], typeof(FlockBehavior), false);
+                r.x = EditorGUIUtility.currentViewWidth - 65f;
+                r.width = 60f;
+                cb.weights[i] = EditorGUI.FloatField(r, cb.weights[i]);
+                r.y += EditorGUIUtility.singleLineHeight * 1.1f;
+            }
         }
     }
 }
