@@ -43,6 +43,26 @@ public class CompositeEditor : Editor {
                 cb.weights[i] = EditorGUI.FloatField(r, cb.weights[i]);
                 r.y += EditorGUIUtility.singleLineHeight * 1.1f;
             }
+
+            EditorGUILayout.EndHorizontal();
+            r.x = 5f;
+            r.width = EditorGUIUtility.currentViewWidth - 10f;
+            r.y += EditorGUIUtility.singleLineHeight * 0.5f;
+
+            //Add new behavior button
+            if(GUI.Button(r, "Add Behavior")) {
+                // AddBehavior(cb);
+                // EditorUtility.SetDirty(cb);
+            }
+
+            r.y += EditorGUIUtility.singleLineHeight * 1.5f;
+            //Remove behavior button
+            if(cb.behaviors != null && cb.behaviors.Length > 0) {
+                if(GUI.Button(r, "Remove Behavior")) {
+                    // RemoveBehavior(cb);
+                    // EditorUtility.SetDirty(cb);
+                }
+            }
         }
     }
 }
