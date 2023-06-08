@@ -31,6 +31,7 @@ public class CompositeEditor : Editor {
             r.y += EditorGUIUtility.singleLineHeight * 1.2f;
 
             //Populate behaviors and weights
+            EditorGUI.BeginChangeCheck();
             for (int i = 0; i < cb.behaviors.Length; i++) {
                 r.x = 5f;
                 r.width = 20f;
@@ -42,6 +43,9 @@ public class CompositeEditor : Editor {
                 r.width = 60f;
                 cb.weights[i] = EditorGUI.FloatField(r, cb.weights[i]);
                 r.y += EditorGUIUtility.singleLineHeight * 1.1f;
+            }
+            if(EditorGUI.EndChangeCheck()) {
+                EditorUtility.setDirty(cb);
             }
 
             EditorGUILayout.EndHorizontal();
