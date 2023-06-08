@@ -4,79 +4,64 @@ using UnityEngine;
 using UnityEditor;
 
 [CustomEditor(typeof(CompositeBehavior))]
-public class CompositeEditor : Editor {
+
+public class CompositeBehaviorEditor : Editor {
     public override void OnInspectorGUI() {
-        //setup inspector
-        CompositeBehavior cb = (CompositeBehavior)target;
-        
-        Rect r = EditorGUILayout.BeginHorizontal();
-        r.height = EditorGUIUtility.singleLineHeight;
+        //setup
+        CompositeBehavior cb = (CompositeBehavior)target;        
 
-        //check for behaviors
+        //Check if array contains no behaviors
         if(cb.behaviors == null || cb.behaviors.Length == 0) {
+            EditorGUILayout.BeginHorizontal();
             EditorGUILayout.HelpBox("No behaviors in array.", MessageType.Warning);
-            EditorGUILayout.EndHorizontal();
-            r = EditorGUILayout.BeginHorizontal();
-            r.height = EditorGUIUtility.singleLineHeight;
+            EditorGUILayout.EndHorizontal();            
         } else {
-            //Setup space for behaviors
-            r.x = 30f;
-            r.width = EditorGUIUtility.currentViewWidth - 95f;
-            EditorGUI.LabelField(r, "Behaviors");
-
-            r.x = EditorGUIUtility.currentViewWidth - 65f;
-            //Setup space for weights
-            r.width = 60f;
-            EditorGUI.LabelField(r, "Weights");
-            r.y += EditorGUIUtility.singleLineHeight * 1.2f;
-
-            //Populate behaviors and weights
+            EditorGUILayout.BeginHorizontal();
+            EditorGUILayout.LabelField("Behaviors", GUILayout.MinWidth(60f), GUILayout.MaxWidth(290f));
+            EditorGUILayout.LabelField("Weights", GUILayout.MinWidth(65f), GUILayout.MaxWidth(65f));
+            EditorGUILayout.EndHorizontal();
             EditorGUI.BeginChangeCheck();
-            for (int i = 0; i < cb.behaviors.Length; i++) {
-                r.x = 5f;
-                r.width = 20f;
-                EditorGUI.LabelField(r, i.ToString());
-                r.x = 30f;
-                r.width = EditorGUIUtility.currentViewWidth - 95f;
-                cb.behaviors[i] = (FlockBehavior)EditorGUI.ObjectField(r, cb.behaviors[i], typeof(FlockBehavior), false);
-                r.x = EditorGUIUtility.currentViewWidth - 65f;
-                r.width = 60f;
-                cb.weights[i] = EditorGUI.FloatField(r, cb.weights[i]);
-                r.y += EditorGUIUtility.singleLineHeight * 1.1f;
+
+            for(int i = 0; i < cb.behaviors.Length; i++) {
+                EditorGUILayout.BeginHorizontal();
+                EditorGUILayout.LabelField(i.ToString(), GUILayout.MinWidth(20f), GUILayout.MaxWidth(20f));
+                cb.behaviors[i] = (FlockBehavior)EditorGUILayout.ObjectField(cb.behaviors[i], typeof(FlockBehavior), false, GUILayout.MinWidth(20f));
+                cb.weights[i] = EditorGUILayout.FloatField(cb.weights[i], GUILayout.MinWidth(60f), GUILayout.MaxWidth(60f));
+                EditorGUILayout.EndHorizontal();
             }
             if(EditorGUI.EndChangeCheck()) {
-                EditorUtility.setDirty(cb);
-            }
-
-            EditorGUILayout.EndHorizontal();
-            r.x = 5f;
-            r.width = EditorGUIUtility.currentViewWidth - 10f;
-            r.y += EditorGUIUtility.singleLineHeight * 0.5f;
-
-            //Add new behavior button
-            if(GUI.Button(r, "Add Behavior")) {
-                AddBehavior(cb);
-                EditorUtility.SetDirty(cb);
-            }
-
-            r.y += EditorGUIUtility.singleLineHeight * 1.5f;
-            //Remove behavior button
-            if(cb.behaviors != null && cb.behaviors.Length > 0) {
-                if(GUI.Button(r, "Remove Behavior")) {
-                    RemoveBehavior(cb);
-                    EditorUtility.SetDirty(cb);
-                }
+                //Undo.RecordObject(target, "Behaviors");
+                EditorUtility.SetDirty(target);
+                GUIUtility.ExitGUI();
             }
         }
+
+        EditorGUILayout.BeginHorizontal();      
+        if(GUILayout.Button("Add Behavior")) {
+            AddBehavior(cb);
+            GUIUtility.ExitGUI();
+        }
+
+        // Uncomment for button layout to be stacked
+        /*EditorGUILayout.EndHorizontal();
+        EditorGUILayout.BeginHorizontal();*/
+
+        if(cb.behaviors != null && cb.behaviors.Length > 0) {
+            if (GUILayout.Button("Remove Behavior"))
+            {
+                RemoveBehavior(cb);
+                GUIUtility.ExitGUI();
+            }
+        }
+        EditorGUILayout.EndHorizontal();
     }
 
     void AddBehavior(CompositeBehavior cb) {
         int oldCount = (cb.behaviors != null) ? cb.behaviors.Length : 0;
-        
         FlockBehavior[] newBehaviors = new FlockBehavior[oldCount + 1];
         float[] newWeights = new float[oldCount + 1];
-        
-        for (int i = 0; i < oldCount; i++) {
+
+        for(int i = 0; i < oldCount; i++) {
             newBehaviors[i] = cb.behaviors[i];
             newWeights[i] = cb.weights[i];
         }
@@ -89,14 +74,14 @@ public class CompositeEditor : Editor {
         int oldCount = cb.behaviors.Length;
         if(oldCount == 1) {
             cb.behaviors = null;
-            cb.behaviors = null;
+            cb.weights = null;
             return;
         }
 
         FlockBehavior[] newBehaviors = new FlockBehavior[oldCount - 1];
         float[] newWeights = new float[oldCount - 1];
-        
-        for (int i = 0; i < oldCount - 1; i++) {
+
+        for(int i = 0; i < oldCount -1; i++) {
             newBehaviors[i] = cb.behaviors[i];
             newWeights[i] = cb.weights[i];
         }
