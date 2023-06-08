@@ -65,4 +65,38 @@ public class CompositeEditor : Editor {
             }
         }
     }
+
+    void AddBehavior(CompositeBehavior cb) {
+        int oldCount = (cb.behaviors != null) ? cb.behaviors.Length : 0;
+        
+        FlockBehavior[] newBehaviors = new FlockBehavior[oldCount + 1];
+        float[] newWeights = new float[oldCount + 1];
+        
+        for (int i = 0; i < oldCount; i++) {
+            newBehaviors[i] = cb.behaviors[i];
+            newWeights[i] = cb.weights[i];
+        }
+        newWeights[oldCount] = 1f;
+        cb.behaviors = newBehaviors;
+        cb.weights = newWeights;
+    }
+
+    void RemoveBehavior(CompositeBehavior cb) {
+        int oldCount = cb.behaviors.Length;
+        if(oldCount == 1) {
+            cb.behaviors = null;
+            cb.behaviors = null;
+            return;
+        }
+
+        FlockBehavior[] newBehaviors = new FlockBehavior[oldCount - 1];
+        float[] newWeights = new float[oldCount - 1];
+        
+        for (int i = 0; i < oldCount - 1; i++) {
+            newBehaviors[i] = cb.behaviors[i];
+            newWeights[i] = cb.weights[i];
+        }
+        cb.behaviors = newBehaviors;
+        cb.weights = newWeights;
+    }
 }
