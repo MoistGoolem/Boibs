@@ -51,16 +51,16 @@ public class CompositeEditor : Editor {
 
             //Add new behavior button
             if(GUI.Button(r, "Add Behavior")) {
-                // AddBehavior(cb);
-                // EditorUtility.SetDirty(cb);
+                AddBehavior(cb);
+                EditorUtility.SetDirty(cb);
             }
 
             r.y += EditorGUIUtility.singleLineHeight * 1.5f;
             //Remove behavior button
             if(cb.behaviors != null && cb.behaviors.Length > 0) {
                 if(GUI.Button(r, "Remove Behavior")) {
-                    // RemoveBehavior(cb);
-                    // EditorUtility.SetDirty(cb);
+                    RemoveBehavior(cb);
+                    EditorUtility.SetDirty(cb);
                 }
             }
         }
