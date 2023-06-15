@@ -9,8 +9,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c2f2824ebbd6c483c93dacbb7a0cdd7b, type: 3}
-  m_Name: Steered Cohesion
+  m_Script: {fileID: 11500000, guid: 907e88abd477ad0498b07a37995e8537, type: 3}
+  m_Name: Same Flock Filter
   m_EditorClassIdentifier: 
-  filter: {fileID: 11400000, guid: 551cc1fde8882474ebae742749e71491, type: 2}
-  agentSmoothTime: 1
