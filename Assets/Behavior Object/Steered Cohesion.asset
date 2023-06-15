@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2f2824ebbd6c483c93dacbb7a0cdd7b, type: 3}
   m_Name: Steered Cohesion
   m_EditorClassIdentifier: 
-  agentSmoothTime: 0.5
+  agentSmoothTime: 1
